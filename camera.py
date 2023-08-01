@@ -1,14 +1,18 @@
 import pygame
 
-class Camera:
-    def __init__(self, player_pos, screen_width, screen_height):
-        self.camera = pygame.math.Vector2(player_pos.x, player_pos.y)
-        self.screen_width = screen_width
-        self.screen_height = screen_height
 
-    def apply(self, entity):
-        return entity.rect.move(-self.camera.x + self.screen_width / 2, -self.camera.y + self.screen_height / 2)
+class CameraClass(pygame.sprite.Group):
+    def __init__(self):
+        self.displaySurface = pygame.display.get_surface()
+        self.halfWidth = self.displaySurface.get_size()[0] // 2
+        self.halfHeight = self.displaySurface.get_size()[1] // 2
+        self.offset = pygame.math.Vector2(100, 200)
 
-    def update(self, player_pos):
-        self.camera.x = player_pos.x
-        self.camera.y = player_pos.y
+    def customDraw(self):
+        self.offset.x = player.rect.centerx - screen.get_width() // 2
+        self.offset.y = player.rect.centery - screen.get_height() // 2
+
+        for sprite in playerGroup:
+            offset_pos = sprite.rect.topleft + self.offset
+            self.displaySurface.blit(sprite.image, offset_pos)
+            playerGroup.draw(screen)
