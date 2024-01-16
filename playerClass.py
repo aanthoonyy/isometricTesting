@@ -11,20 +11,23 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec(1570, 360)
         self.speed = 0.1
         self.velocity = vec(20, 20)
-
+        self.camera_offset_x = 0
+        self.camera_offset_y = 0
 
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.pos += (0, 5)
+            self.pos += (0, 1)
         if keys[pygame.K_d]:
-            self.pos += (0, -5)
+            self.pos += (0, -1)
         if keys[pygame.K_w]:
-            self.pos += (-5, 0)
+            self.pos += (-1, 0)
         if keys[pygame.K_s]:
-            self.pos += (5, 0)
+            self.pos += (1, 0)
 
         self.rect.center = cartesianToIsometric(self.pos)
+        self.camera_offset_x = -self.rect.x + (1920 // 2)
+        self.camera_offset_y = -self.rect.y + (1080 // 2)
 
 def draw_crosshair(window, position, tile_size):
     crosshair_color = (255, 255, 255)

@@ -29,7 +29,7 @@ def load_map(map_data, grassGroup, screen):
             if tile:
                 grass = Grass(offset_x + x * 50 - y * 50, offset_y + x * 25 + y * 25)
                 grassGroup.add(grass)
-
+    pygame.display.update()
 
 
 def delete_tile(grassGroup, mouse_x, mouse_y):

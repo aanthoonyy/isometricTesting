@@ -5,6 +5,7 @@ import grassClass
 from playerClass import Player
 from grassClass import *
 from selectionBoxClass import *
+from camera import *
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -45,6 +46,7 @@ tile_size = (tile_width, tile_height)
 map_width = columns * isometric_size
 map_height = rows * isometric_size // 2
 map_rect = pygame.Rect(0, 0, map_width, map_height)
+camera = Camera(1920, 1080)
 
 while True:
     dt = clock.get_time() / 1000.0
@@ -57,31 +59,28 @@ while True:
             if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-
-        # if event.type == MOUSEBUTTONDOWN:
-        #     if event.button == 1:
-        #         mouse_x, mouse_y = pygame.mouse.get_pos()
-        #         clicked_grass = get_clicked_tile(mouse_x, mouse_y, grassGroup)
-        #         print(clicked_grass)
-        #         if clicked_grass:
-        #             clicked_grass.kill()
-        #             print("Mouse cursor collided with a sprite!")
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Left mouse button
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 delete_tile(grassGroup, mouse_x, mouse_y)
 
+    camera.update(player)
     screen.fill((0, 0, 0))
-    screen.blit(display, (0, 0))
+    #screen.blit(display, (0, 0))
+    for grass in grassGroup:
+        screen.blit(grass.image, camera.apply(grass))
 
-    grassGroup.draw(screen)
+    #grassGroup.draw(screen)
 
     player.update()
     playerGroup.update()
 
-    playerGroup.draw(screen)
 
+    #playerGroup.draw(screen)
+    for player in playerGroup:
+        screen.blit(player.image, camera.apply(player))
     mouse_x, mouse_y = pygame.mouse.get_pos()
+
 
 
     pygame.display.update()

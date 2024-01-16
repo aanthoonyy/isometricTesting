@@ -1,18 +1,17 @@
 import pygame
+import math
+class Camera:
+    def __init__(self, width, height):
+        self.camera = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+        self.scroll = pygame.Vector2(0, 0)
+        self.dx = 0
+        self.dy = 0
+        self.speed = 25
+    def update(self, target):
+        self.dx = -target.rect.x + self.width / 2
+        self.dy = -target.rect.y + self.height / 2
 
-
-class CameraClass(pygame.sprite.Group):
-    def __init__(self):
-        self.displaySurface = pygame.display.get_surface()
-        self.halfWidth = self.displaySurface.get_size()[0] // 2
-        self.halfHeight = self.displaySurface.get_size()[1] // 2
-        self.offset = pygame.math.Vector2(100, 200)
-
-    def customDraw(self):
-        self.offset.x = player.rect.centerx - screen.get_width() // 2
-        self.offset.y = player.rect.centery - screen.get_height() // 2
-
-        for sprite in playerGroup:
-            offset_pos = sprite.rect.topleft + self.offset
-            self.displaySurface.blit(sprite.image, offset_pos)
-            playerGroup.draw(screen)
+    def apply(self, entity):
+        return entity.rect.move(self.dx, self.dy)
